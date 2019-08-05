@@ -1,7 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-    entry: './src/index.ts',
+    entry: './src/entry/index.ts',
     output: {
         filename: 'app.js'
     },
