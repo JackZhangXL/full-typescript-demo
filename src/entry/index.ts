@@ -6,6 +6,8 @@ import '../base/05-generics'
 import '../base/06-inference'
 import '../base/07-compatible'
 import '../base/08-guards'
+import '../base/09-advance1'
+import '../base/09-advance2'
 
 let hello : string = 'hello typescript';
 document.querySelectorAll('#app')[0].innerHTML = hello;
