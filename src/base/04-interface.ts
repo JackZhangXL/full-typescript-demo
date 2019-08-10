@@ -35,10 +35,10 @@ render(<IShop>mockShop2)    // 两种类型断言方式等价，但不推荐这�
 
 
 // function 接口
-interface IAdd {
+interface IAdd2 {
     (x: number, y: number): number
 }
-let add9: IAdd = (a, b) => a + b    // 函数的参数名【不需要】与接口声明的参数名相同
+let add9: IAdd2 = (a, b) => a + b    // 函数的参数名【不需要】与接口声明的参数名相同
 add9(1, 2)    // 3
 // add9('1', 2)    // error，参数类型错误
 

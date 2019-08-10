@@ -9,12 +9,14 @@ function add1(x: number, y: number): number {
 let add2 = (x: number, y: number): number => x + y
 
 // 方式三：类型别名 type，TS 新增方式，只是定义函数，你还需要提供函数的具体实现
-type add3 = (x: number, y: number) => number
+type TAdd = (x: number, y: number) => number
+let add3: TAdd = (x, y) => x + y
 
 // 方式四：接口 interface，TS 新增方式，只是定义函数，你还需要提供函数的具体实现
-interface add4 {
+interface IAdd {
     (x: number, y: number): number
 }
+let add4: IAdd = (x, y) => x + y
 
 // 可选参数：可选参数只能位于参数末尾，不能在参数中间插入个可选参数
 function add5(x: number, y?: number) {
@@ -51,13 +53,13 @@ function add8(...rest: any[]) {         // 列表函数
         return rest.join('')
     }
 }
-add8(1, 2)              // 3
+add8(1, 2, 3)           // 6
 add8('a', 'b', 'c')     // abc
 
 function disp(s1: string): void
 function disp(n1: number, s1: string): void
 function disp(x: any, y?:any): void {   // 列表函数
-    console.log(`${x} ${y}`)
+    console.log(`${x} ${y !== undefined ? y : ''}`)
 } 
-disp('abc')     // abc undefined
+disp('abc')     // abc
 disp(1, 'xyz')  // 1 xyz

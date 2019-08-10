@@ -55,7 +55,7 @@ function area(s: Shape) {
         case 'circle':
             return Math.PI * s.radius ** 2
         default:
-            return ((e: never) => {throw new Error(e)})(s)  // 如果 s 走到了这里，说明前面有分支没有覆盖到
+            return ((e: never) => {})(s)  // 如果 s 走到了这里，说明前面有分支没有覆盖到
     }
 }
 console.log(area({kind: 'circle', radius: 1}))  // 3.1415926

@@ -30,13 +30,13 @@ let tuple: [number, string] = [0, '1']
 // tuple[2]             // error，仍旧无法访问
 
 // symbol
-let s1: symbol = Symbol()
+let sym: symbol = Symbol()
 
-// undefined
+// undefined：通常用于和其他类型混搭
 let un: undefined = undefined
 let un2: number | undefined = undefined
 
-// null
+// null：通常用于和其他类型混搭
 let nu: null = null
 let nu2: object | null = null
 
@@ -46,16 +46,16 @@ function noReturn(): void {
 }
 let vo: void = undefined  // 变量声明为 void 通常没什么用，也只能给它赋值为 undefined
 
-// any，表示不确定类型，放弃静态编译，仍旧运行时绑定
+// any，表示不确定类型，放弃静态编译检查
 let x: any = 1
 x = []
 x = () => {}
 
-// never，表示放弃治疗
-let error = () => {
-    throw new Error('error')
+// never，表示放弃治疗，常用于抛异常，无限循环
+let throwError = (message: string): never => {   // 返回 never 的函数必须存在无法达到的终点
+    throw new Error(message)
 }
-let endless = () => {
+let endless = (): never => {
     while(true) {}
 }
 
@@ -78,4 +78,3 @@ let firstMonth: Month = Month.Jan
 console.log(firstMonth)     // 0
 let month: Month[] = [Month.Jan, Month.Feb, Month.Mar]
 console.log(month)          // [0, 1, 2]
-
