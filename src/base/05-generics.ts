@@ -1,3 +1,5 @@
+// 泛型的意义在于约束，能约束成相同类型。这是它与 any 的最大区别，any 没有任何约束信息。
+
 // 泛型函数
 function log<T>(value: T): T {
     console.log(value);
@@ -15,8 +17,12 @@ log2(['e', ',f', 'g'])          // ["e", "f", "g"]
 
 // 类型定义泛型
 type TLog= <T>(value: T) => T   // 也可以用类型定义来定义泛型
-let log3: TLog = log            // 具体实现
+let log3: TLog = (value) => {
+    console.log(value);
+    return value;
+}
 log3({ a: 1, b: 2 })            // { a: 1, b: 2 }
+
 
 // 泛型也可以约束接口
 interface ILog {
@@ -48,6 +54,7 @@ let log7 = new Log<number>()    // 显式指定类型
 log7.run(1)                     // 1
 let log8 = new Log()
 log8.run({ a: 1 })              // {a: 1}，隐式推导
+
 
 // 泛型约束
 interface ILength {      // 先预定义接口
