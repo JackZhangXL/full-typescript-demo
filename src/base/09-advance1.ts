@@ -1,4 +1,4 @@
-// 交叉类型
+// 交叉类型：将多个类型合并成一个类型，所以不是交叉取交集，而是取并集
 interface IDog {
     run(): void
 }
@@ -32,21 +32,21 @@ function getPet(master: Master) {
     return pet
 }
 
-interface Square {
+interface ISquare {
     kind: "square";
     size: number;
 }
-interface Rectangle {
+interface IRectangle {
     kind: "rectangle";
     width: number;
     height: number;
 }
-interface Circle {
+interface ICircle {
     kind: "circle";
     radius: number;
 }
-type Shape = Square | Rectangle | Circle
-function area(s: Shape) {
+type IShape = ISquare | IRectangle | ICircle
+function area(s: IShape) {
     switch (s.kind) {
         case "square":
             return s.size * s.size;
@@ -62,18 +62,6 @@ console.log(area({kind: 'circle', radius: 1}))  // 3.1415926
 
 
 // 索引类型
-let myObj = {
-    a: 1,
-    b: 2,
-    c: 3
-}
-
-function getValues(obj: any, keys: string[]) {
-    return keys.map(key => obj[key])
-}
-console.log(getValues(myObj, ['a', 'b']))   // [1, 2]
-console.log(getValues(myObj, ['e', 'f']))   // [undefined, undefined]，编译器并没有报错，要约束这种情况需要索引类型
-
 // keyof T：索引类型的查询操作符
 interface IObj {
     a: number;
@@ -82,13 +70,25 @@ interface IObj {
 let myObj1: keyof IObj     // myObj1 的类型是 IObj 的属性的联合类型："a" | "b"
 
 // T[K]：索引访问操作符
-let myObj2: IObj['a']     // myObj1 的类型是 number
+let myObj2: IObj['a']     // myObj2 的类型是 number
 
 // T extends U：泛型约束
+
+let myObj = {
+    a: 1,
+    b: '2',
+    c: true
+}
+
+function getValues(obj: any, keys: string[]) {
+    return keys.map(key => obj[key])
+}
+console.log(getValues(myObj, ['a', 'b']))   // [1, '2']
+console.log(getValues(myObj, ['e', 'f']))   // [undefined, undefined]，编译器并没有报错，要约束这种情况需要索引类型
 
 // 改造上例，让参数 keys 必须是参数 obj 里的属性，返回值是参数 obj 里的值
 function getValues2<T, K extends keyof T>(obj: T, keys: K[]): T[K][] {
     return keys.map(key => obj[key])
 }
-console.log(getValues2(myObj, ['a', 'b']))   // [1, 2]
-// console.log(getValues2(myObj, ['d', 'e']))   // error
+console.log(getValues2(myObj, ['a', 'b']))   // [1, '2']
+// console.log(getValues3(myObj, ['d', 'e']))   // error

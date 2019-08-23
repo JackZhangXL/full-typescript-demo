@@ -10,17 +10,11 @@ class JavaScript {
     helloJavaScript() { console.log('Hello JavaScript')}
 }
 
-// 类型保护函数
-// 参数是联合类型，可能是 Java 也可能是 JavaScript
-// 返回值是类型谓词（参数 is 类型）
-function isJava(lang: Java | JavaScript): lang is Java { 
-    return (lang as Java).helloJava !== undefined
-}
-
+// 类型保护函数：可以提前对类型做出预判，即TS能在特定的区块中保证变量属于某种特定的类型，你可以放心地使用这种类型的属性和方法。
 function getLanguage(type: Type, x: string | number) {
     let lang = type === Type.Strong ? new Java() : new JavaScript();
     
-    // // Step1
+    // Step1
     // if (lang.helloJava) {        // error，类型上不存在 helloJava 属性
     //     lang.helloJava()
     // } else {
@@ -66,3 +60,9 @@ function getLanguage(type: Type, x: string | number) {
 }
 
 getLanguage(Type.Week, 1)
+
+// 参数是联合类型，可能是 Java 也可能是 JavaScript
+// 返回值是类型谓词（参数 is 类型）
+function isJava(lang: Java | JavaScript): lang is Java { 
+    return (lang as Java).helloJava !== undefined
+}
