@@ -1,4 +1,7 @@
 // 类型兼容
+// 对象兼容：多属性没关系，少属性不行
+// 函数的参数兼容：少参数没关系，多参数不行
+
 // 枚举兼容性：枚举和 number 类型是可以兼容的，但不同枚举间是完全不兼容的
 enum Fruit { Apple, Banana }
 enum Color { Red, Yellow }
@@ -30,8 +33,8 @@ function hoc(handler: Handler) {
     return handler
 }
 
-// 判断依据一：参数个数，原则：参数少了没关系，参数多了不行
-// a.参数个数固定：参数少了没关系，参数多了不行
+// 判断依据一：参数个数，原则：少参数没关系，多参数不行
+// a.参数个数固定
 let handler1 = (a: number) => a
 hoc(handler1)
 let handler2 = (a: number, b: number, c: number) => a + b + c
@@ -48,7 +51,7 @@ func1 = func3       // 固定参数兼容可选参数和剩余参数
 func3 = func1       // 剩余参数兼容固定和剩余参数
 func3 = func2       // 剩余参数兼容固定和剩余参数
 
-// 判断依据二：参数类型：基础类型必须一致，如果是 object 类型，和对象兼容性一致：多属性没关系，少属性不行
+// 判断依据二：参数类型：基础类型必须一致，如果是 object 类型，同参数兼容性：少属性没关系，多属性不行
 let handler3 = (a: string, b: number) => {}
 // hoc(handler3)       // error，参数类型不兼容
 
@@ -82,27 +85,35 @@ function overload(a: any, b: any): any {}           // ok
 
 
 // 类兼容性：
-// constructor 和 static 成员是不参与比较的
-// 不同类的实例间只比较 public 成员。protected 成员和 private 成员只在父子类实例间比较。
-class A {
-    constructor(p: number, q: number) {}
+// 比较的是实例所占的内存空间，占空间少的的可以兼容占空间多的。基于此推论出几个信息：
+// 1.constructor 和 static 是不参与比较的。因为 constructor 是分配内存空间，而 static 并不在实例对象的内存里
+// 2.没有继承关系的类实例，占空间少的的可以兼容占空间多的
+// 3.有继承关系的类实例，父类可以兼容子类，但子类不能兼容父类
+class Parent1 {
+    constructor(id: number, name: string) {
+        this.id = id;
+        this.name = name;
+    }
     id: number = 1
     private name: string = ''
 }
-class B {
-    constructor(p: number) {}
+class Parent2 {
+    constructor(id: number) {
+        this.id = id;
+    }
     static s = 1
     id: number = 2
-    private name: string = ''
 }
-let aa = new A(1, 2)
-let bb = new B(1)
-// aa = bb             // error，private 成员只在父子实例间才进行比较
-// bb = aa             // error，private 成员只在父子实例间才进行比较
-class C extends A {}
-let cc = new C(3, 4)
-aa = cc
-cc = aa
+let parent1 = new Parent1(1, 'jack')
+let parent2 = new Parent2(1)
+// parent1 = parent2             // error 
+parent2 = parent1               // OK，占空间少的的可以兼容占空间多的
+class Child extends Parent1 {
+    private age: number = 0
+}
+let child = new Child(3, 'jack')
+parent1 = child     // OK，父类实例占空间肯定比子类实例占空间少
+// child = parent1     // error
 
 // 泛型兼容性
 interface IEmpty<T> {
@@ -123,4 +134,3 @@ let logFunc2 = <T>(y: T): T => {
 }
 logFunc1 = logFunc2
 logFunc2 = logFunc1
-

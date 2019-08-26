@@ -13,6 +13,8 @@ type RequiredObj = Required<IMap>   // 所有属性都必须
 
 type PickObj = Pick<IMap, 'a' | 'b'>    // 抽取子集
 
+// Record 源码里 T extends keyof any 参照：
+// https://stackoverflow.com/questions/55535598/why-does-keyof-any-have-type-of-string-number-symbol-in-typescript
 type RecordObj = Record<'x' | 'y', IMap>    // 创建新类型
 
 
@@ -42,12 +44,13 @@ type T6 = NonNullable<string | number | undefined | null>   // 不允许 null �
 
 type T7 = Parameters<(a: number, b: string) => string> // 取函数的参数类型，以元祖形式返回，T7 是 [string, number] 类型
 
+type T8 = ReturnType<() => string>   // 获取函数返回值的类型，T8 是 string 类型
+
+// 关于 new(): T 这种泛型的写法：https://stackoverflow.com/questions/39622778/what-is-new-in-typescript
 class Foo { 
     constructor(a: number, b: boolean, c: string) {} 
 }
 
-type T8 = ConstructorParameters<typeof Foo> // 取构造函数的参数类型，以元祖形式返回，T7 是 [string, number] 类型
+type T9 = ConstructorParameters<typeof Foo> // 取构造函数的参数类型，以元祖形式返回，T9 是 [string, number] 类型
 
-type T9 = InstanceType<typeof Foo>   // 获取类的类型，T9 是 Foo 类型
-
-type T10 = ReturnType<() => string>   // 获取函数返回值的类型，T10 是 string 类型
+type T10 = InstanceType<typeof Foo>   // 获取类的类型，T10 是 Foo 类型

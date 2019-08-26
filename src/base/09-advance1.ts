@@ -28,7 +28,7 @@ enum Master { Boy, Girl }
 function getPet(master: Master) {
     let pet = master === Master.Boy ? new Dog1() : new Cat1();
     pet.eat()       // OK，pet 被推断为 Dog1 | Cat1 的联合类型，只能访问它们都有的方法
-    // pet.jump()   // error，无法确定 pet 的类型
+    // pet.jump()   // error，无法确定 pet 的类型，参照类型保护
     return pet
 }
 
@@ -91,4 +91,4 @@ function getValues2<T, K extends keyof T>(obj: T, keys: K[]): T[K][] {
     return keys.map(key => obj[key])
 }
 console.log(getValues2(myObj, ['a', 'b']))   // [1, '2']
-// console.log(getValues3(myObj, ['d', 'e']))   // error
+// console.log(getValues2(myObj, ['d', 'e']))   // error
